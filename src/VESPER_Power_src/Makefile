@@ -23,4 +23,7 @@ mrc.o : mrc.c $(HEADER)
 	$(CC) -O3 -c mrc.c -lm $(OPT)
 
 mrcfft.o : mrcfft.c $(HEADER) mrcfft.h
-	$(CC) -O3 -c mrcfft.c -lm $(OPT) -lfftw3_threads -lfftw3f 
+	$(CC) -O3 -c mrcfft.c -lm $(OPT) -lfftw3_threads -lfftw3f
+
+clean:
+	find . -name "*.o" -type f -delete

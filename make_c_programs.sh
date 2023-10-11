@@ -1,8 +1,5 @@
 ###Set up DeepMainmast fast version
 
-
-
-
 if [ ! -e "./src/DAQscore_Unet_src" ]||[ ! -e "./server_bin" ];then
     echo "Can not find src directory."
     exit
@@ -24,5 +21,17 @@ do
     popd
 done
 
+pushd pulchra_306
+cc -O3 -o ../../server_bin/pulchra pulchra.c pulchra_data.c -lm
+popd
 
 popd
+
+#Check Files:
+for pg in pulchra VESPER_Power DAQscore_Unet MainmastC_UnetAssembleMtx  MainmastC_Unet_node MainmastC_UnetAF2  MainmastC_UnetChainAssign  VESPER_Power_colab
+do
+    if [ ! -e ./server_bin/${pg} ];then
+        echo "Missing $pg. Please check ./src/${pg}_src/"
+        exit
+    fi
+done
