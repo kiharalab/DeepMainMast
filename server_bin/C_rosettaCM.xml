@@ -1,0 +1,30 @@
+<ROSETTASCRIPTS>
+    <TASKOPERATIONS>
+    </TASKOPERATIONS>
+    <SCOREFXNS>
+        <ScoreFunction name="stage1" weights="score3" >
+            <Reweight scoretype="atom_pair_constraint" weight="0.1"/>
+            <Reweight scoretype="elec_dens_fast" weight="10"/>
+        </ScoreFunction>
+        <ScoreFunction name="stage2" weights="score4_smooth_cart" >
+            <Reweight scoretype="atom_pair_constraint" weight="0.1"/>
+            <Reweight scoretype="elec_dens_fast" weight="10"/>
+        </ScoreFunction>
+        <ScoreFunction name="fullatom" weights="beta_cart" >
+            <Reweight scoretype="atom_pair_constraint" weight="0.1"/>
+            <Reweight scoretype="elec_dens_fast" weight="35"/>
+			<Set scale_sc_dens_byres="R:0.76,K:0.76,E:0.76,D:0.76,M:0.76,C:0.81,Q:0.81,H:0.81,N:0.81,T:0.81,S:0.81,Y:0.88,W:0.88,A:0.88,F:0.88,P:0.88,I:0.88,L:0.88,V:0.88"/>
+        </ScoreFunction>
+    </SCOREFXNS>
+    <FILTERS>
+    </FILTERS>
+    <MOVERS>
+        <Hybridize name="hybridize" stage1_scorefxn="stage1" stage2_scorefxn="stage2" fa_scorefxn="fullatom"  batch="1" stage1_increase_cycles="1.0" stage2_increase_cycles="1.0" linmin_only="0" realign_domains="0">
+            <Template pdb="1tmpA_thread.pdb" weight="1.0" cst_file="AUTO" />
+        </Hybridize>
+    </MOVERS>
+    <PROTOCOLS>
+        <Add mover="hybridize"/>
+    </PROTOCOLS>
+
+</ROSETTASCRIPTS>
