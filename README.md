@@ -107,7 +107,7 @@ conda env create -f environment.yml
 ```
 Each time when you want to run this software, simply activate the environment by
 ```
-conda activate DeepMainMast
+conda activate deepmainmast
 conda deactivate(when you want to exit) 
 ```
 
@@ -119,4 +119,5 @@ bash make_c_programs.sh
 
 
 </details>
+
 
