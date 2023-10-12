@@ -46,9 +46,9 @@ Input: cryo-EM map+sequence file. Output: modeled protein structure. The input a
    Step-by-step instructions are available. For free user, colab has 4-hour running time limit and may not work for large structures (>=1000 residues).
 </details>
 
-### Code Ocean: https://codeocean.com/capsule/0749800/tree/v2
+### Code Ocean: https://codeocean.com/capsule/0749800
 <details> 
-   Free online platform for easy usage. For academic user, CodeOcean has 10-hour running time limit per month.
+   Free online platform for easy usage. For academic users, CodeOcean has 10-hour running time limit per month.
 </details>
 
 ### Local installation with source code at Github
