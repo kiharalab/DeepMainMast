@@ -288,7 +288,7 @@ done
 run_commands "${com_list[@]}"
 echo "INFO : C-alpha Node computing Done"
 
-#Path tracing by VRP solver----------------
+#Path tracing by VRP solver----------------###
 com_list=()
 ASB=$BIN_DIR/UnetPathEdge.py #Large penalties for edges with Pbb=0
 for p in ${Pca_cutoff[@]}
