@@ -111,8 +111,8 @@ while getopts "A:p:m:f:c:o:t:T:C:rhM:x:H" option; do
 	case $option in
 		A)
 			echo "Option -A: $OPTARG"
-			af2_model=$OPTARG
-			check_exists $af2_model
+			af2_model_ori=$OPTARG
+			check_exists $af2_model_ori
 			af2_mode=true
 			;;
 		H)
@@ -245,7 +245,7 @@ OUTF=$RESULTS_DIR
 OUTCA=$OUTF/FINAL_CA_MODELs/
 OUT_RANKED=$OUTF/RANKED_DATA/
 
-if "${resume_flag}" ];then
+if "${resume_flag}";then
 	echo "INFO: Resuming..."
 else
 	#cp $map $RESULTS_DIR/input.map
@@ -254,8 +254,19 @@ else
 fi
 
 SEQ=$RESULTS_DIR/seq.fasta
-
 check_exists $SEQ
+
+##AF2 Model check
+if "${af2_mode}";then
+	#Renumber and assign chain ID
+	RENUM=$BIN_DIR/Renum_chain.py
+	af2_model=$RESULTS_DIR/AF2_renum.pdb
+	if [ ! -e $af2_model ];then
+		python3 $RENUM $SEQ $af2_model_ori --OutPath $af2_model
+	fi
+	check_exists $af2_model
+fi
+
 
 #Run Emap2sf----------------------------------
 if [ ! -e $UNET_DIR/sigmoidAA_GLN.mrc ]||[ ! -e $UNET_DIR/atom_CB.mrc ];then
