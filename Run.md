@@ -56,7 +56,7 @@ BBBBBBBBBB
 
 - -x [Rosetta proram PATH] : (example: /home/username/rosetta_bin_linux_XXX_bundle/) If this option is not used, the program generate only CA-atom models.
 
-- -A [AlphaFold2 Model]: Please renumber the residue numbers in the model based on the target sequence.
+- -A [AlphaFold2 Model]: For multi-chain target, please split the model by TER line for each chain.
 
 - -H : Homo-oligomer mode. If specified, the program performs the chain-ID reassignment.
 
