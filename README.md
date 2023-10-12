@@ -76,6 +76,47 @@ Structure modeling from maps is an indispensable step for studying proteins and 
 (6) Scoring generated full-atom models based on the DAQ(AA) score and the DOT score.<br>
  
 <p align="center">
-  <img src="" alt="DeepMainMast framework" width="70%">
+  <img src="dmm_pipeline.png" alt="DeepMainMast framework" width="70%">
 </p>
 </details>
+
+## Installation
+<details>
+
+### System Requirements
+CPU: >=8 cores <br>
+Memory (RAM): >=50Gb. For maps with more than 3,000 residues, memory space should be higher than 200GB. <br>
+GPU: any GPU supports CUDA with at least 12GB memory. <br>
+GPU is required for DeepMainMast and no CPU version is available for CryoREAD since it is too slow.
+
+## Installation Instructions
+### 1. [`Install git`](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git) 
+### 2. Clone the repository in your computer 
+```
+git clone  https://github.com/kiharalab/DeepMainMast.git && cd DeepMainMast
+```
+
+### 3. Build dependencies.   
+You have two options to install dependency on your computer:
+#### 3.2 Install with anaconda (Recommended)
+##### 3.2.1 [`install anaconda`](https://www.anaconda.com/download). 
+##### 3.2.2 Install dependency in the command line
+Make sure you are in the DeepMainMast directory and then run 
+```
+conda env create -f environment.yml
+```
+Each time when you want to run this software, simply activate the environment by
+```
+conda activate DeepMainMast
+conda deactivate(when you want to exit) 
+```
+
+### 4. Compile C packages
+Run the following command:
+```
+bash make_c_programs.sh
+```
+
+
+</details>
+
