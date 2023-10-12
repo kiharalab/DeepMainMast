@@ -35,3 +35,5 @@ do
         exit
     fi
 done
+
+echo "DONE: All Programs were compiled."

@@ -16,7 +16,9 @@ check_not_exists(){
 
 check_empty(){
 	if [ -z "$1" ];then
+		echo "****"
 		echo "Missing Value for $2"
+		echo "****"
 		show_help
 		exit 1
 	fi
@@ -63,7 +65,7 @@ function run_subcommands(){
 }
 
 show_help() {
-    echo "Usage: dmm_full_multithreads.sh [option]"
+    echo "Usage: dmm_full_multithreads.sh [option] -f [FASTA file] -m [MAP file]"
     echo "DeepMaimast full-protocol"
     echo "Paratemters:"
     echo "  -h, Show help page"
@@ -94,6 +96,7 @@ Pca_cutoff=(0.3 0.4 0.5)
 Aligned_positions=(30 50)
 ## Resolution to generate simulated density from AF2 models
 sim_resolutions=(5.0 6.0 7.0)
+## GPU
 
 
 
@@ -245,7 +248,7 @@ OUT_RANKED=$OUTF/RANKED_DATA/
 if "${resume_flag}" ];then
 	echo "INFO: Resuming..."
 else
-	cp $map $RESULTS_DIR/input.map
+	#cp $map $RESULTS_DIR/input.map
 	cp $map $RESULTS_DIR/input.mrc
 	cp $fasta $RESULTS_DIR/seq.fasta
 fi
@@ -256,9 +259,11 @@ check_exists $SEQ
 
 #Run Emap2sf----------------------------------
 if [ ! -e $UNET_DIR/sigmoidAA_GLN.mrc ]||[ ! -e $UNET_DIR/atom_CB.mrc ];then
-    python3 $EMAP2SF --gpu 0 --mode=0 -O $RESULTS_DIR -F=$RESULTS_DIR/input.mrc -M=$BIN_DIR/emap2secplus/best_model/Unet_Protein_Atom.pth.tar --contour=$CONTOUR  --batch_size=16 --type=0
+    #python3 $EMAP2SF --gpu 0 --mode=0 -O $RESULTS_DIR -F=$RESULTS_DIR/input.mrc -M=$BIN_DIR/emap2secplus/best_model/Unet_Protein_Atom.pth.tar --contour=$CONTOUR  --batch_size=16 --type=0
+    python3 $EMAP2SF --mode=0 -O $RESULTS_DIR -F=$RESULTS_DIR/input.mrc -M=$BIN_DIR/emap2secplus/best_model/Unet_Protein_Atom.pth.tar --contour=$CONTOUR  --batch_size=16 --type=0
     echo "INFO : ATOM prediction Done"
-    python3 $EMAP2SF --gpu 0 --mode=0 -O $RESULTS_DIR -F=$RESULTS_DIR/input.mrc -M=$BIN_DIR/emap2secplus/best_model/Unet_Protein_AA.pth.tar --contour=$CONTOUR  --batch_size=16 --type=1
+    #python3 $EMAP2SF --gpu 0 --mode=0 -O $RESULTS_DIR -F=$RESULTS_DIR/input.mrc -M=$BIN_DIR/emap2secplus/best_model/Unet_Protein_AA.pth.tar --contour=$CONTOUR  --batch_size=16 --type=1
+    python3 $EMAP2SF --mode=0 -O $RESULTS_DIR -F=$RESULTS_DIR/input.mrc -M=$BIN_DIR/emap2secplus/best_model/Unet_Protein_AA.pth.tar --contour=$CONTOUR  --batch_size=16 --type=1
     echo "INFO : AA prediction Done"
 fi
 #check output files
