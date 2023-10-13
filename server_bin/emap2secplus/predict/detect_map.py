@@ -60,7 +60,7 @@ def detect_map(input_map_path,resume_model_path,save_path,
         print("given contour %f"%contour)
         contour = contour/percentile_98
         print("revised contour %f"%contour)
-        unet_detect_protein(map_data, resume_model_path,
+        detection_protein = unet_detect_protein(map_data, resume_model_path,
                                            voxel_size, stride, batch_size,
                                            train_save_path, contour,
                                     params,input_map_path,save_path)
@@ -70,17 +70,17 @@ def detect_map(input_map_path,resume_model_path,save_path,
         #                                   train_save_path, contour, params)
 
 
+        if detection_protein is not None:
+            if params['type']==0:
+                label_list=['BG','N',"CA","C","O","CB","Others"]
+                pre_name="atom"
+            elif params['type']==1:
+                #check the residue types
+                label_list = ["ALA", "VAL", "PHE", "PRO", "MET", "ILE", "LEU", "ASP", "GLU", "LYS", "ARG", "SER", "THR", "TYR",
+                        "HIS", "CYS", "ASN", "TRP", "GLN", "GLY"]
+                pre_name = "sigmoidAA"
+            for k, base_name in enumerate(label_list):
+                cur_map_path = os.path.join(save_path, pre_name+"_" + str(base_name) + ".mrc")
+                save_predict_specific_map(cur_map_path, k, detection_protein, input_map_path)
 
-        # if params['type']==0:
-        #     label_list=['BG','N',"CA","C","O","CB","Others"]
-        #     pre_name="atom"
-        # elif params['type']==1:
-        #     #check the residue types
-        #     label_list = ["ALA", "VAL", "PHE", "PRO", "MET", "ILE", "LEU", "ASP", "GLU", "LYS", "ARG", "SER", "THR", "TYR",
-        #             "HIS", "CYS", "ASN", "TRP", "GLN", "GLY"]
-        #     pre_name = "sigmoidAA"
-        # for k, base_name in enumerate(label_list):
-        #     cur_map_path = os.path.join(save_path, pre_name+"_" + str(base_name) + ".mrc")
-        #     save_predict_specific_map(cur_map_path, k, detection_protein, input_map_path)
-
-    print("TRIED TO OPEN MAP")
+    print("finish prediction")
