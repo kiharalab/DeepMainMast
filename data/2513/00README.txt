@@ -1,0 +1,2 @@
+#Command
+./dmm_full_multithreads.sh -p [PROGRAM PATH (./)] -c 0.01 -o [OUTPUT PATH] -T 600 -C 20 -M 5 -m ./data/2513/emd_2513.mrc -f ./data/2513/emd_2513.fasta -t 600 -H -A ./1461/emd_2513_af2.pdb -x [ROSETTA PROGRAM PATH]
