@@ -171,7 +171,7 @@ Please check the instructions [here](https://new.rosettacommons.org/demos/latest
 <details> 
 <summary>Example: single-chain structure modeling (3j9sA)</summary>
 
-### Example: single-chain structure modeling
+### Example: single-chain structure modeling (3j9sA)
 Please run the following command in DeepMainMast program folder. <br> 
 Examples are kept in [data/3j9sA](data/3j9sA) directory. 
 #### Example Input
@@ -204,8 +204,9 @@ The example output is kept in the [data/3j9sA/RANKED_DATA](data/3j9sA/RANKED_DAT
 
 
 <details> 
-<summary>Example: multi-chain structure (EMD-1461, HomoOligomer)</summary>
+<summary>Example: multi-chain structure modeling (EMD-1461, HomoOligomer)</summary>
 
+### Example: multi-chain structure modeling (EMD-1461, HomoOligomer)
 Please run the following command in DeepMainMast program folder. <br> 
 Examples are kept in [data/1461](data/1461) directory.
 
@@ -243,8 +244,10 @@ The example output is kept in the [data/1461/RANKED_DATA](data/1461/RANKED_DATA)
 </details>
 
 <details> 
-<summary>Example: multi-chain structure (EMD-2513, HeteroOligomer)</summary>
+<summary>Example: multi-chain structure modeling (EMD-2513, HeteroOligomer)</summary>
 
+
+### Example: multi-chain structure modeling (EMD-2513, HeteroOligomer)
 Please run the following command in DeepMainMast program folder. <br> 
 Examples are kept in [data/2513](data/2513) directory.
 
