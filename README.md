@@ -120,4 +120,77 @@ bash make_c_programs.sh
 
 </details>
 
+## Examples and commands
+In data/, there are three examples (3j9sA, 1461 and 2513).
+### Single-Chain Modeling (3j9sA)
+#### Input files in data/3j9sA
++ Target sequence file (-f): 3j9sA.fasta
++ MAP file (-m): 3j9sA.mrc
++ AlphaFold2 Model (optional -A): 3j9sA_af2.pdb
+#### Parameters (example)
++ Maximum number of CPU cores to use (-C): 20
++ Maximum number of CPU cores per one thread (-M): 5
++ Density contour level (-c): 0.01
++ Computational Time Limit for PATH tracing per thread (-t): 600 sec = 10 mins
++ Computational Time Limit for Fragment assembly (-T): 600 sec = 10 mins
+#### Command for Calpha PATH tracing
+```
+./dmm_full_multithreads.sh -p [PROGRAM PATH (./)] -c 0.01 -o [OUTPUT PATH] -t 600 -T 600 -C 20 -M 5 -m ./data/3j9sA/3j9sA.mrc -f ./data/3j9sA/3j9sA.fasta
+```
+#### Command for Calpha PATH tracing using AlphaFold2 Model
+```
+./dmm_full_multithreads.sh -p [PROGRAM PATH (./)] -c 0.01 -o [OUTPUT PATH] -t 600 -T 600 -C 20 -M 5 -m ./data/3j9sA/3j9sA.mrc -f ./data/3j9sA/3j9sA.fasta -A ./data/3j9sA_af2.pdb
+```
+#### Command for Calpha PATH tracing using AlphaFold2 Model and Full-Atom Model building&Refinement by Rosetta
+```
+./dmm_full_multithreads.sh -p [PROGRAM PATH (./)] -c 0.01 -o [OUTPUT PATH] -t 600 -T 600 -C 20 -M 5 -m ./data/3j9sA/3j9sA.mrc -f ./data/3j9sA/3j9sA.fasta -A ./data/3j9sA_af2.pdb -x [ROSETTA PROGRAM PATH]
+```
 
+### Multi-Chain Modeling (EMD-1461, Homooligomer)
+#### Input files in data/1461
++ Target sequence file (-f): emd_1461.fasta
++ MAP file (-m): emd_1461.mrc
++ AlphaFold2 Model (optional -A): emd_1461_af2.pdb
+#### Parameters (example)
++ Maximum number of CPU cores to use (-C): 18
++ Maximum number of CPU cores per one thread (-M): 6
++ Density contour level (-c): 0.3
++ Computational Time Limit for PATH tracing per thread (-t): 1200 sec = 20 mins
++ Computational Time Limit for Fragment assembly (-T): 600 sec = 10 mins
++ Including Homo-oliogomer: -H option
+#### Command for Calpha PATH tracing
+```
+./dmm_full_multithreads.sh -p [PROGRAM PATH (./)] -c 0.3 -o [OUTPUT PATH] -t 1200 -T 600 -C 18 -M 6 -m ./data/1461/emd_1461.mrc -f ./data/1461/emd_1461.fasta  -H -A ./1461/emd_1461_af2.pdb -x [ROSETTA PROGRAM PATH]
+```
+#### Command for Calpha PATH tracing using AlphaFold2 Model
+```
+./dmm_full_multithreads.sh -p [PROGRAM PATH (./)] -c 0.3 -o [OUTPUT PATH] -t 1200 -T 600 -C 18 -M 6 -m ./data/1461/emd_1461.mrc -f ./data/1461/emd_1461.fasta  -H -A ./1461/emd_1461_af2.pdb 
+```
+#### Command for Calpha PATH tracing using AlphaFold2 Model and Full-Atom Model building&Refinement by Rosetta
+```
+./dmm_full_multithreads.sh -p [PROGRAM PATH (./)] -c 0.3 -o [OUTPUT PATH] -t 1200 -T 600 -C 18 -M 6 -m ./data/1461/emd_1461.mrc -f ./data/1461/emd_1461.fasta  -H -A ./1461/emd_1461_af2.pdb -x [ROSETTA PROGRAM PATH]
+```
+
+### Multi-Chain Modeling (EMD-2513, HeteroOligomer)
+#### Input files in data/2513
++ Target sequence file (-f): emd_2513.fasta
++ MAP file (-m): emd_2513.mrc
++ AlphaFold2 Model (optional -A): emd_2513_af2.pdb
+#### Parameters (example)
++ Maximum number of CPU cores to use (-C): 18
++ Maximum number of CPU cores per one thread (-M): 6
++ Density contour level (-c): 0.01
++ Computational Time Limit for PATH tracing per thread (-t): 1200 sec = 20 mins
++ Computational Time Limit for Fragment assembly (-T): 600 sec = 10 mins
+#### Command for Calpha PATH tracing
+```
+./dmm_full_multithreads.sh -p [PROGRAM PATH (./)] -c 0.01 -o [OUTPUT PATH] -t 1200 -T 600 -C 18 -M 6 -m ./data/2513/emd_2513.mrc -f ./data/2513/emd_2513.fasta  -A ./2513/emd_2513_af2.pdb -x [ROSETTA PROGRAM PATH]
+```
+#### Command for Calpha PATH tracing using AlphaFold2 Model
+```
+./dmm_full_multithreads.sh -p [PROGRAM PATH (./)] -c 0.01 -o [OUTPUT PATH] -t 1200 -T 600 -C 18 -M 6 -m ./data/2513/emd_2513.mrc -f ./data/2513/emd_2513.fasta  -A ./2513/emd_2513_af2.pdb 
+```
+#### Command for Calpha PATH tracing using AlphaFold2 Model and Full-Atom Model building&Refinement by Rosetta
+```
+./dmm_full_multithreads.sh -p [PROGRAM PATH (./)] -c 0.01 -o [OUTPUT PATH] -t 1200 -T 600 -C 18 -M 6 -m ./data/2513/emd_2513.mrc -f ./data/2513/emd_2513.fasta  -A ./2513/emd_2513_af2.pdb -x [ROSETTA PROGRAM PATH]
+```
