@@ -215,10 +215,10 @@ check_empty "$fasta" "-f [fasta formatfile]"
 #Environment-------------
 #PLEASE EDIT THIS SECTION ACCORDING TO 
 #YOUR ENVIRONMENT
-module load miniconda38
-eval "$(conda shell.bash hook)"
-# Acitivate the conda enviroment
-module load deepmainmast-multi
+#module load miniconda38
+#eval "$(conda shell.bash hook)"
+## Acitivate the conda enviroment
+#module load deepmainmast-multi
 #------------------------
 #Programs
 BIN_DIR="$PROGRAM_PATH/server_bin/"
