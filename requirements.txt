@@ -6,4 +6,4 @@ numpy==1.24.4
 ortools==9.4.1874
 pulp==2.6.0
 BioTEMPy==2.1.0
-pytorch=1.9.0
+pytorch==1.9.0
