@@ -282,6 +282,6 @@ This example does not include any identical chains, so we should not add -H in c
 #### Example Output
 
 The example output is kept in the [data/2513/RANKED_DATA](data/2513/RANKED_DATA) directory.
-test
+
 
 </details>

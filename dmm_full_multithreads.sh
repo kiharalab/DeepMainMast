@@ -234,7 +234,6 @@ if "${Buildfullatom_flag}"; then
 	check_exists $RosettaScript
 
 	export ROSETTA3=$RosettaPath/main/
-	#exit
 fi
 #Set Up files
 mkdir -p $output_dir/results/unet
@@ -629,13 +628,24 @@ for method in DMonly all AFonly VESPER; do
 	fi
 done
 ##Ranking CA models
+echo "INFO : DOT scoring Done"
+echo "INFO : CA modeling Done"
+
 python $BIN_DIR/ca_ranker.py $OUTCA
 
-echo "INFO : DOT scoring Done"
+##Window19 models
+PG=$BIN_DIR/DAQwindow.py
+for mid in {1..4};do #Max 4 CA models
+	daq_file=$OUTCA/rank${mid}.daq
+	if [ -e $daq_file ];then
+		python $PG $daq_file 9 --OutPath $OUTCA/rank${mid}_
+	fi
+done
 
-echo "INFO : CA modeling Done"
 if ! "${Buildfullatom_flag}";then
-	echo "INFO : DeepMainmast Computation Done $nofullatom_flag"
+	echo "INFO : DeepMainmast Computation Done: CA models"
+	check_exists $OUTCA/rank1_daq_score_w9.pdb
+	cp $OUTCA/rank1_daq_score_w9.pdb $output_dir/DeepMainmast.pdb
 	echo "DONE" >$output_dir/done.out
 	exit
 fi
@@ -723,8 +733,10 @@ for mid in {1..20};do #Max 20 models
 done
 
 #Check Files....
-if ! "${Buildfullatom_flag}";then
-	echo "INFO : DeepMainmast Computation Done $nofullatom_flag"
+if "${Buildfullatom_flag}";then
+	echo "INFO : DeepMainmast Computation Done with FullAtom Model"
+	check_exists $OUT_RANKED/rank1_daq_score_w9.pdb
+	cp $OUT_RANKED/rank1_daq_score_w9.pdb $output_dir/DeepMainmast.pdb
 	echo "DONE" >$output_dir/done.out
 	exit
 fi

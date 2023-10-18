@@ -53,7 +53,9 @@ models = sorted(tbl, key=lambda x: x[1], reverse=True)
 rank = 1
 for model_path, score,daq,dot in models:
     print(model_path, score)
+    daq_file=model_path.replace('.pdb','.daq')
     os.system(f"cp {model_path} {job_dir}/rank{rank}.pdb")
+    os.system(f"cp {daq_file} {job_dir}/rank{rank}.daq")
     rank += 1
 
 csvfile=f"{job_dir}/ranking.csv"
