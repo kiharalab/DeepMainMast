@@ -79,14 +79,13 @@ show_help() {
     echo "  -T [Time for fragment assembly (sec)]"
     echo "  -C [Max number of threads]"
 	echo "  -M [Max cpu cores per one thread job]"
-    echo "  -r, Resume the job using an existing directory"
+    #echo "  -r, Resume the job using an existing directory"
     echo "  -x [Rosetta program PATH], Execute RosettaCM modeling part"
     echo "  -H, Homo-oligomer targets. DeepMainmast refine chain-assignment."
 	exit 1
 }
 
 #Parameters please edit-----------
-## Number of Vehicles for main-chain tracing
 #Num_vehcles=(5 10 20 40)
 Num_vehcles=(5 10 20)
 ## Number of Path-Sequence Alignments per path
@@ -100,7 +99,6 @@ Aligned_positions=(30 50)
 ## Resolution to generate simulated density from AF2 models
 #sim_resolutions=(5.0 6.0 7.0)
 sim_resolutions=(5.0)
-## GPU
 
 
 
@@ -204,12 +202,6 @@ echo "#FullAtom Building: $RosettaPath"
 check_empty "$PROGRAM_PATH" "-p"
 check_exists $PROGRAM_PATH/server_bin/MainmastC_UnetAF2
 
-if "${resume_flag}";then
-	echo "Resume Process"
-else
-	check_not_exists $output_dir
-fi
-
 check_empty "$CONTOUR" "-c"
 check_empty "$output_dir" "-o [output dir]"
 check_empty "$TIME_TRACE" "-t [Time for Tracing (sec)]"
@@ -240,21 +232,33 @@ if "${Buildfullatom_flag}"; then
 	export ROSETTA3=$RosettaPath/main/
 fi
 #Set Up files
-mkdir -p $output_dir/results/unet
 
-UNET_DIR=$output_dir/results/unet
-RESULTS_DIR=$output_dir/results
+rand_tag=`python -c "import random, string; print(''.join(random.choices(string.ascii_letters + string.digits, k=8)))"`
+RESULTS_DIR=$output_dir/results${rand_tag}
+
+#Attempt 3 times
+if [ -e $RESULTS_DIR ];then
+	rand_tag=`python -c "import random, string; print(''.join(random.choices(string.ascii_letters + string.digits, k=8)))"`
+	RESULTS_DIR=$output_dir/results${rand_tag}
+fi
+if [ -e $RESULTS_DIR ];then
+	rand_tag=`python -c "import random, string; print(''.join(random.choices(string.ascii_letters + string.digits, k=8)))"`
+	RESULTS_DIR=$output_dir/results${rand_tag}
+fi
+if [ -e $RESULTS_DIR ];then
+	echo "Can not generate new dir: $RESULTS_DIR"
+	exit
+fi
+
+mkdir -p $RESULTS_DIR/unet
+mkdir -p $RESULTS_DIR/unet
+UNET_DIR=$RESULTS_DIR/unet
 OUTF=$RESULTS_DIR
 OUTCA=$OUTF/FINAL_CA_MODELs/
 OUT_RANKED=$OUTF/RANKED_DATA/
 
-if "${resume_flag}";then
-	echo "INFO: Resuming..."
-else
-	#cp $map $RESULTS_DIR/input.map
-	cp $map $RESULTS_DIR/input.mrc
-	cp $fasta $RESULTS_DIR/seq.fasta
-fi
+cp $map $RESULTS_DIR/input.mrc
+cp $fasta $RESULTS_DIR/seq.fasta
 
 SEQ=$RESULTS_DIR/seq.fasta
 check_exists $SEQ
@@ -649,7 +653,7 @@ done
 if ! "${Buildfullatom_flag}";then
 	echo "INFO : DeepMainmast Computation Done: CA models"
 	check_exists $OUTCA/rank1_daq_score_w9.pdb
-	cp $OUTCA/rank1_daq_score_w9.pdb $output_dir/DeepMainmast.pdb
+	cp $OUTCA/rank1_daq_score_w9.pdb $output_dir/DeepMainmast_${rand_tag}.pdb
 	echo "DONE" >$output_dir/done.out
 	exit
 fi
@@ -740,7 +744,7 @@ done
 if "${Buildfullatom_flag}";then
 	echo "INFO : DeepMainmast Computation Done with FullAtom Model"
 	check_exists $OUT_RANKED/rank1_daq_score_w9.pdb
-	cp $OUT_RANKED/rank1_daq_score_w9.pdb $output_dir/DeepMainmast.pdb
+	cp $OUT_RANKED/rank1_daq_score_w9.pdb $output_dir/DeepMainmast_${rand_tag}.pdb
 	echo "DONE" >$output_dir/done.out
 	exit
 fi
