@@ -43,12 +43,12 @@ Input: cryo-EM map+sequence file. Output: modeled protein structure. The input a
 
 ### Google Colab: https://colab.research.google.com/github/kiharalab/DeepMainMast/blob/main/DeepMainMast.ipynb
 <details> 
-   Step-by-step instructions are available. For free user, colab has 4-hour running time limit and may not work for large structures (>=1000 residues).
+   Step-by-step instructions are available. For free user, colab has 4-hour running time limit and may not work for large structures (>=1000 residues). Limited by redistribution constraints, only Ca tracing is available here
 </details>
 
 ### Code Ocean: https://codeocean.com/capsule/0749800
 <details> 
-   Free online platform for easy usage. For academic users, CodeOcean has 10-hour running time limit per month.
+   Free online platform for easy usage. For academic users, CodeOcean has 10-hour running time limit per month. Limited by redistribution constraints, only Ca tracing is available here
 </details>
 
 ### Local installation with source code at Github
@@ -119,7 +119,7 @@ bash make_c_programs.sh
 
 ### 5. Install Rosetta (optional)
 If you want to build full-atom protein structure, then you need to install rosetta for DeepMainMast.
-Please check the instructions [here](https://new.rosettacommons.org/demos/latest/tutorials/install_build/install_build). 
+Please check the instructions [here](https://new.rosettacommons.org/demos/latest/tutorials/install_build/install_build) to install Rosetta locally. 
 
 
 </details>
@@ -137,12 +137,14 @@ Please check the instructions [here](https://new.rosettacommons.org/demos/latest
 [map_path]  is the path of the experimental cryo-EM map.<br>
 [fasta_path] is the path of the input fasta file about sequence information. <br>
 [contour] specifies the contour level as a density threshold to remove outside regions to save processing time. <br>
-[output_path] specifies the output directory of DeepMainMast modeled structure. <br>
+[output_path] specifies the output directory of DeepMainMast modeled structure. Final modeled structure DeepMainmast.pdb will be saved here. If the directory already exists, the final output will be DeepMainmast[random_digit].pdb to avoid overwritting.<br>
 [path_training_time] specifies the computational Time Limit for PATH tracing per thread, default: 600 seconds. Suggested time: [total_num_residues]. <br>
 [fragment_assembling_time] specifies the computational Time Limit for Fragment assembly, default: 600 seconds. Suggested time: [total_num_residues]. <br>
-[num_cpu] Number of CPUs used for structure modeling processes. Minimum: 8. The more is better to accelerate the process.
+[num_cpu] Number of CPUs used for structure modeling processes. Minimum: 8. The more is better to accelerate the process.<br>
 [ROSETTA_PROGRAM_PATH] specifies the rosetta program path, please make sure it is the directory that includes "main" directory after rosetta installment. It is optional, if you do not use this parameter, then DeepMainMast will only build Calpha only structures. It is required if you want to build full-atom protein structure.<br>
 <b> Please include -H in command line if you have any two or more chains are identical. </b> That is important of correct chain assignment for identical chains.
+<br> You can also add ```-F``` argument to accelerate the backbone tracing and sequence assignment steps, but may reduce the quality of final structure.
+
 
 </details> 
 
@@ -158,13 +160,13 @@ Please check the instructions [here](https://new.rosettacommons.org/demos/latest
 [fasta_path] is the path of the input fasta file about sequence information. <br>
 [alphafold_pdb_path] is the path of the alphafold modeled structure in pdb format. Please combine all single-chain structures in one PDB file, separated by "TER" for different chains' records. The chain ID does not matter, for identical chains, you only need to provide the chain records once in the pdb format. <br>
 [contour] specifies the contour level as a density threshold to remove outside regions to save processing time. <br>
-[output_path] specifies the output directory of DeepMainMast modeled structure. <br>
+[output_path] specifies the output directory of DeepMainMast modeled structure. Final modeled structure DeepMainmast.pdb will be saved here. If the directory already exists, the final output will be DeepMainmast[random_digit].pdb to avoid overwritting.<br>
 [path_training_time] specifies the computational Time Limit for PATH tracing per thread, default: 600 seconds. Suggested time: [total_num_residues]. <br>
 [fragment_assembling_time] specifies the computational Time Limit for Fragment assembly, default: 600 seconds. Suggested time: [total_num_residues]. <br>
-[num_cpu] Number of CPUs used for structure modeling processes. Minimum: 8. The more is better to accelerate the process.
+[num_cpu] Number of CPUs used for structure modeling processes. Minimum: 8. The more is better to accelerate the process.<br>
 [ROSETTA_PROGRAM_PATH] specifies the rosetta program path, please make sure it is the directory that includes "main" directory after rosetta installment. It is optional, if you do not use this parameter, then DeepMainMast will only build Calpha only structures. It is required if you want to build full-atom protein structure.<br>
 <b> Please include -H in command line if you have any two or more chains are identical. </b> That is important of correct chain assignment for identical chains.
-
+<br> You can also add ```-F``` argument to accelerate the backbone tracing and sequence assignment steps, but may reduce the quality of final structure.
 
 </details>
 
@@ -182,23 +184,23 @@ Examples are kept in [data/3j9sA](data/3j9sA) directory.
 ```
 ./dmm_full_multithreads.sh -p ./ -c 0.01 -o output_3j9sA -t 600 -T 600 -C 8 -M 8 -m ./data/3j9sA/3j9sA.mrc -f ./data/3j9sA/3j9sA.fasta
 ```
-The outputs will be generated in [output_3j9sA/results] directory. The expected output structure is [output_3j9sA/results/FINAL_CA_MODELs/rank1.pdb].
+The outputs will be generated in [output_3j9sA/results] directory. The expected output structure is [output_3j9sA/DeepMainmast.pdb].
 
 #### Calpha PATH tracing using AlphaFold2 Model
 ```
 ./dmm_full_multithreads.sh -p ./ -c 0.01 -o output_3j9sa -t 600 -T 600 -C 8 -M 8 -m ./data/3j9sA/3j9sA.mrc -f ./data/3j9sA/3j9sA.fasta -A ./data/3j9sA/3j9sA_af2.pdb
 ```
-The outputs will be generated in [output_3j9sA/results] directory. The expected output structure is [output_3j9sA/results/FINAL_CA_MODELs/rank1.pdb].
+The outputs will be generated in [output_3j9sA/results] directory. The expected output structure is [output_3j9sA/DeepMainmast.pdb].
 
 #### DeepMainMast: Protein full-atom structure modeling using AlphaFold2 Model
 ```
 ./dmm_full_multithreads.sh -p ./ -c 0.01 -o output_3j9sa -t 600 -T 600 -C 8 -M 8 -m ./data/3j9sA/3j9sA.mrc -f ./data/3j9sA/3j9sA.fasta -A ./data/3j9sA/3j9sA_af2.pdb -x [ROSETTA PROGRAM PATH]
 ```
 Please confirm you install rosetta well, then please change -x to the rosetta program directory that includes "main" directory. <br>
-The outputs will be generated in [output_3j9sA/results] directory. The expected output structure is [output_3j9sA/results/RANKED_DATA/rank1_daq_score_w9.pdb].
+The outputs will be generated in [output_3j9sA/results] directory. The expected output structure is [output_3j9sA/DeepMainmast.pdb].
 
 #### Example Output
-The example output is kept in the [data/3j9sA/RANKED_DATA](data/3j9sA/RANKED_DATA) directory.
+The example output is kept []() for your reference.
 
 </details>
 
@@ -221,14 +223,14 @@ Examples are kept in [data/1461](data/1461) directory.
 ./dmm_full_multithreads.sh -p ./ -c 0.3 -o output_1461 -t 1200 -T 600 -C 8 -M 8 -m ./data/1461/emd_1461.mrc -f ./data/1461/emd_1461.fasta  -H 
 ```
 Since homo-oligomer includes identical chains, -H argument is required in the command line. <br>
-The outputs will be generated in [output_1461/results] directory. The expected output structure is [output_1461/results/FINAL_CA_MODELs/rank1.pdb].
+The outputs will be generated in [output_1461/results] directory. The expected output structure is [output_1461/DeepMainmast.pdb].
 
 #### Calpha PATH tracing using AlphaFold2 Model
 ```
 ./dmm_full_multithreads.sh -p ./ -c 0.3 -o output_1461 -t 1200 -T 600 -C 8 -M 8 -m ./data/1461/emd_1461.mrc -f ./data/1461/emd_1461.fasta  -H -A ./data/1461/emd_1461_af2.pdb 
 ```
 Since homo-oligomer includes identical chains, -H argument is required in the command line. <br>
-The outputs will be generated in [output_1461/results] directory. The expected output structure is [output_1461/results/FINAL_CA_MODELs/rank1.pdb].
+The outputs will be generated in [output_1461/results] directory. The expected output structure is [output_1461/DeepMainmast.pdb].
 
 
 #### DeepMainMast: Protein full-atom structure modeling using AlphaFold2 Model
@@ -236,10 +238,10 @@ The outputs will be generated in [output_1461/results] directory. The expected o
 ./dmm_full_multithreads.sh -p ./ -c 0.3 -o output_1461 -t 1200 -T 600 -C 8 -M 8 -m ./data/1461/emd_1461.mrc -f ./data/1461/emd_1461.fasta  -H -A ./data/1461/emd_1461_af2.pdb -x [ROSETTA PROGRAM PATH]
 ```
 Since homo-oligomer includes identical chains, -H argument is required in the command line. <br>
-The outputs will be generated in [output_1461/results] directory. The expected output structure is [output_1461/results/RANKED_DATA/rank1_daq_score_w9.pdb].
+The outputs will be generated in [output_1461/results] directory. The expected output structure is [output_1461/DeepMainmast.pdb].
 
 #### Example Output 
-The example output is kept in the [data/1461/RANKED_DATA](data/1461/RANKED_DATA) directory.
+The example output is kept []() for your reference.
 
 </details>
 
@@ -260,14 +262,14 @@ Examples are kept in [data/2513](data/2513) directory.
 ```
 ./dmm_full_multithreads.sh -p ./ -c 0.01 -o output_2513 -t 1200 -T 1200 -C 8 -M 8 -m ./data/2513/emd_2513.mrc -f ./data/2513/emd_2513.fasta
 ```
-The outputs will be generated in [output_2513/results] directory. The expected output structure is [output_2513/results/FINAL_CA_MODELs/rank1.pdb].<br>
+The outputs will be generated in [output_2513/results] directory. The expected output structure is [output_2513/DeepMainmast.pdb].<br>
 This example does not include any identical chains, so we should not add -H in command line. <b>For other examples that may include identical chains in the complex, please do not forget to add -H in command line.</b>
 
 #### Calpha PATH tracing using AlphaFold2 Model
 ```
 ./dmm_full_multithreads.sh -p ./ -c 0.01 -o output_2513 -t 1200 -T 1200 -C 8 -M 8 -m ./data/2513/emd_2513.mrc -f ./data/2513/emd_2513.fasta  -A ./data/2513/emd_2513_af2.pdb 
 ```
-The outputs will be generated in [output_2513/results] directory. The expected output structure is [output_2513/results/FINAL_CA_MODELs/rank1.pdb].<br>
+The outputs will be generated in [output_2513/results] directory. The expected output structure is [output_2513/DeepMainmast.pdb].<br>
 This example does not include any identical chains, so we should not add -H in command line. <b>For other examples that may include identical chains in the complex, please do not forget to add -H in command line.</b>
 
 
@@ -276,12 +278,11 @@ This example does not include any identical chains, so we should not add -H in c
 ```
 ./dmm_full_multithreads.sh -p ./ -c 0.01 -o output_2513 -t 1200 -T 1200 -C 8 -M 8 -m ./data/2513/emd_2513.mrc -f ./data/2513/emd_2513.fasta  -A ./data/2513/emd_2513_af2.pdb -x [ROSETTA PROGRAM PATH]
 ```
-The outputs will be generated in [output_2513/results] directory. The expected output structure is [output_2513/results/RANKED_DATA/rank1_daq_score_w9.pdb].<br>
+The outputs will be generated in [output_2513/results] directory. The expected output structure is [output_2513/DeepMainmast.pdb].<br>
 This example does not include any identical chains, so we should not add -H in command line. <b>For other examples that may include identical chains in the complex, please do not forget to add -H in command line.</b>
 
 #### Example Output
 
-The example output is kept in the [data/2513/RANKED_DATA](data/2513/RANKED_DATA) directory.
-
+The example output is kept []() for your reference.
 
 </details>
