@@ -82,23 +82,9 @@ show_help() {
     #echo "  -r, Resume the job using an existing directory"
     echo "  -x [Rosetta program PATH], Execute RosettaCM modeling part"
     echo "  -H, Homo-oligomer targets. DeepMainmast refine chain-assignment."
+    echo "  -F, Using reduced parameters for fast computing"
 	exit 1
 }
-
-#Parameters please edit-----------
-## Number of Vehicles for main-chain tracing
-Num_vehcles=(5 10 20 40)
-## Number of Path-Sequence Alignments per path
-Num_alignments=(5 10 20)
-## Probability cut-off for CA atoms
-Pca_cutoff=(0.3 0.4 0.5)
-## Minimum number of aligned positions in the AF2 model
-Aligned_positions=(30 50)
-## Resolution to generate simulated density from AF2 models
-sim_resolutions=(5.0 6.0 7.0)
-## GPU
-
-
 
 resume_flag=false
 Buildfullatom_flag=false
@@ -106,8 +92,8 @@ MAX_Threads=8
 Nsub=4
 af2_mode=false
 homo_mode=false
-
-while getopts "A:p:m:f:c:o:t:T:C:rhM:x:H" option; do
+fast_mode=false
+while getopts "A:p:m:f:c:o:t:T:C:rhM:x:HF" option; do
 	case $option in
 		A)
 			echo "Option -A: $OPTARG"
@@ -118,6 +104,10 @@ while getopts "A:p:m:f:c:o:t:T:C:rhM:x:H" option; do
 		H)
 			echo "Option -H: HomoOligomer Mode"
 			homo_mode=true
+			;;
+		F)
+			echo "Option -F: Using Reduced Parameters. FAST Mode"
+			fast_mode=true
 			;;
 		p)
 			echo "Option -p: $OPTARG"
@@ -185,6 +175,31 @@ while getopts "A:p:m:f:c:o:t:T:C:rhM:x:H" option; do
 	esac
 done
 
+#Parameters please edit-----------
+
+#Full parameters
+## Number of Vehicles for main-chain tracing
+Num_vehcles=(5 10 20 40)
+## Number of Path-Sequence Alignments per path
+Num_alignments=(5 10 20)
+## Probability cut-off for CA atoms
+Pca_cutoff=(0.3 0.4 0.5)
+## Minimum number of aligned positions in the AF2 model
+Aligned_positions=(30 50)
+## Resolution to generate simulated density from AF2 models
+sim_resolutions=(5.0 6.0 7.0)
+
+#Fast reduced parameters
+if "${fast_mode}";then
+ Num_vehcles=(5 10 20)
+ Num_alignments=(5 10)
+ Pca_cutoff=(0.3) #reduced
+ Aligned_positions=(30 50)
+ sim_resolutions=(5.0)
+fi
+
+
+
 echo "#PROGRAM_PATH: $PROGRAM_PATH"
 echo "#map: $map"
 echo "#fasta: $fasta"
@@ -231,8 +246,9 @@ if "${Buildfullatom_flag}"; then
 fi
 #Set Up files
 
-rand_tag=`python -c "import random, string; print(''.join(random.choices(string.ascii_letters + string.digits, k=8)))"`
-RESULTS_DIR=$output_dir/results${rand_tag}
+#rand_tag=`python -c "import random, string; print(''.join(random.choices(string.ascii_letters + string.digits, k=8)))"`
+rand_tag=''
+RESULTS_DIR=$output_dir/results
 
 #Attempt 3 times
 if [ -e $RESULTS_DIR ];then
@@ -651,7 +667,7 @@ done
 if ! "${Buildfullatom_flag}";then
 	echo "INFO : DeepMainmast Computation Done: CA models"
 	check_exists $OUTCA/rank1_daq_score_w9.pdb
-	cp $OUTCA/rank1_daq_score_w9.pdb $output_dir/DeepMainmast_${rand_tag}.pdb
+	cp $OUTCA/rank1_daq_score_w9.pdb $output_dir/DeepMainmast${rand_tag}.pdb
 	echo "DONE" >$output_dir/done.out
 	exit
 fi
@@ -742,7 +758,7 @@ done
 if "${Buildfullatom_flag}";then
 	echo "INFO : DeepMainmast Computation Done with FullAtom Model"
 	check_exists $OUT_RANKED/rank1_daq_score_w9.pdb
-	cp $OUT_RANKED/rank1_daq_score_w9.pdb $output_dir/DeepMainmast_${rand_tag}.pdb
+	cp $OUT_RANKED/rank1_daq_score_w9.pdb $output_dir/DeepMainmast${rand_tag}.pdb
 	echo "DONE" >$output_dir/done.out
 	exit
 fi
