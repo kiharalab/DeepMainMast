@@ -41,7 +41,7 @@ We have four publicly available platforms, which basically offer similar functio
 Input: cryo-EM map+sequence file. Output: modeled protein structure. The input and output are the same across all platforms.
 </details>
 
-### Google Colab: https://colab.research.google.com/github/kiharalab/DeepMainMast/blob/main/DeepMainMast_Multi_chain.ipynb
+### Google Colab: https://colab.research.google.com/github/kiharalab/DeepMainMast/blob/main/DeepMainMast.ipynb
 <details> 
    Step-by-step instructions are available. For free user, colab has 4-hour running time limit and may not work for large structures (>=1000 residues).
 </details>

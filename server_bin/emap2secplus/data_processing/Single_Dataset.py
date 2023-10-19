@@ -34,4 +34,5 @@ class Single_Dataset(torch.utils.data.Dataset):
         input = np.load(inputfile)
         input = input[np.newaxis, :].astype(np.float32)
         #input2 = torch.from_numpy(np.array(input, np.float32, copy=True))
+        # del input
         return input,cur_id
