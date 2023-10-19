@@ -200,11 +200,6 @@ echo "#FullAtom Building: $RosettaPath"
 check_empty "$PROGRAM_PATH" "-p"
 check_exists $PROGRAM_PATH/server_bin/MainmastC_UnetAF2
 
-if "${resume_flag}";then
-	echo "Resume Process"
-else
-	check_not_exists $output_dir
-fi
 
 check_empty "$CONTOUR" "-c"
 check_empty "$output_dir" "-o [output dir]"
