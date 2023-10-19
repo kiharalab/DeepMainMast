@@ -200,7 +200,7 @@ Please confirm you install rosetta well, then please change -x to the rosetta pr
 The outputs will be generated in [output_3j9sA/results] directory. The expected output structure is [output_3j9sA/DeepMainmast.pdb].
 
 #### Example Output
-The example output is kept []() for your reference.
+The example output is kept [here](https://kiharalab.org/emsuites/deepmainmast_example/3j9sA/) for your reference. All intermediate outputs are also kept here.
 
 </details>
 
@@ -241,7 +241,7 @@ Since homo-oligomer includes identical chains, -H argument is required in the co
 The outputs will be generated in [output_1461/results] directory. The expected output structure is [output_1461/DeepMainmast.pdb].
 
 #### Example Output 
-The example output is kept []() for your reference.
+The example output is kept [here](https://kiharalab.org/emsuites/deepmainmast_example/1461/) for your reference. All intermediate outputs are also kept here.
 
 </details>
 
@@ -283,6 +283,6 @@ This example does not include any identical chains, so we should not add -H in c
 
 #### Example Output
 
-The example output is kept []() for your reference.
+The example output is kept [here](https://kiharalab.org/emsuites/deepmainmast_example/2513/) for your reference. All intermediate outputs are also kept here.
 
 </details>
