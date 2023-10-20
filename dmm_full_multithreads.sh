@@ -113,7 +113,7 @@ while getopts "A:p:m:f:c:o:t:T:C:rhM:x:HFs" option; do
 			fast_mode=true
 			;;
 		s)
-			echo "Option -F: Using Reduced Parameters. FAST Mode"
+			echo "Option -s: Generate one full atom model/initial CA model"
 			server_mode=true
 			;;
 		p)
