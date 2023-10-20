@@ -83,6 +83,7 @@ show_help() {
     echo "  -x [Rosetta program PATH], Execute RosettaCM modeling part"
     echo "  -H, Homo-oligomer targets. DeepMainmast refine chain-assignment."
     echo "  -F, Using reduced parameters for fast computing"
+    echo "  -s, Using server mode. Only Generate 1 full-atom model/initial model."
 	exit 1
 }
 
@@ -93,7 +94,9 @@ Nsub=4
 af2_mode=false
 homo_mode=false
 fast_mode=false
-while getopts "A:p:m:f:c:o:t:T:C:rhM:x:HF" option; do
+server_mode=false
+
+while getopts "A:p:m:f:c:o:t:T:C:rhM:x:HFs" option; do
 	case $option in
 		A)
 			echo "Option -A: $OPTARG"
@@ -108,6 +111,10 @@ while getopts "A:p:m:f:c:o:t:T:C:rhM:x:HF" option; do
 		F)
 			echo "Option -F: Using Reduced Parameters. FAST Mode"
 			fast_mode=true
+			;;
+		s)
+			echo "Option -F: Using Reduced Parameters. FAST Mode"
+			server_mode=true
 			;;
 		p)
 			echo "Option -p: $OPTARG"
@@ -702,7 +709,10 @@ for method in DMonly all AFonly VESPER; do
 	output_dir=$OUTCA/CM_${method}/
 	log=$OUTCA/CM_${method}.log
 	if [ -e $output_dir ] && [ -e $output_dir/A_setup.sh ] && [ -e $output_dir/C_rosettaCM.sh ] && [ ! -e $log ];then
-		cmd="bash $output_dir/C_rosettaCM.sh $output_dir > $log"
+		cmd="bash $output_dir/C_rosettaCM.sh $output_dir 5 > $log"
+		if "${server_mode}";then #Generate one model
+			cmd="bash $output_dir/C_rosettaCM.sh $output_dir 1 > $log"
+		fi
 		com_list+=("$cmd")
 	fi
 done

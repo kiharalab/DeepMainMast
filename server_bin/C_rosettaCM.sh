@@ -6,7 +6,7 @@ $ROSETTA3/source/bin/rosetta_scripts.static.linuxgccrelease \
  -database $ROSETTA3/database/ \
  -in:file:fasta seq.fasta \
  -parser:protocol C_rosettaCM.xml \
- -nstruct 5 \
+ -nstruct $2 \
  -relax:jump_move true \
  -relax:dualspace \
  -out::suffix _singletgt \
