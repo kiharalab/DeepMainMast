@@ -35,7 +35,7 @@ Genki Terashi, Xiao Wang, Devashish Prasad, Tsukasa Nakamura & Daisuke Kihara. N
 
 # Online Platform:
 
-## Server(Recommended): https://github.com/kiharalab/DeepMainMast
+## Server(Recommended): https://em.kiharalab.org/algorithm/DeepMainMast
 <details>
 We have four publicly available platforms, which basically offer similar functionality.
 Input: cryo-EM map+sequence file. Output: modeled protein structure. The input and output are the same across all platforms.
@@ -144,7 +144,7 @@ Please check the instructions [here](https://new.rosettacommons.org/demos/latest
 [ROSETTA_PROGRAM_PATH] specifies the rosetta program path, please make sure it is the directory that includes "main" directory after rosetta installment. It is optional, if you do not use this parameter, then DeepMainMast will only build Calpha only structures. It is required if you want to build full-atom protein structure.<br>
 <b> Please include -H in command line if you have any two or more chains are identical. </b> That is important of correct chain assignment for identical chains.
 <br> You can also add ```-F``` argument to accelerate the backbone tracing and sequence assignment steps, but may reduce the quality of final structure.
-
+<br> If you are running on multi-GPU machines, please see FAQ to configure GPU correctly before running.
 
 </details> 
 
@@ -167,6 +167,7 @@ Please check the instructions [here](https://new.rosettacommons.org/demos/latest
 [ROSETTA_PROGRAM_PATH] specifies the rosetta program path, please make sure it is the directory that includes "main" directory after rosetta installment. It is optional, if you do not use this parameter, then DeepMainMast will only build Calpha only structures. It is required if you want to build full-atom protein structure.<br>
 <b> Please include -H in command line if you have any two or more chains are identical. </b> That is important of correct chain assignment for identical chains.
 <br> You can also add ```-F``` argument to accelerate the backbone tracing and sequence assignment steps, but may reduce the quality of final structure.
+<br> If you are running on multi-GPU machines, please see FAQ to configure GPU correctly before running.
 
 </details>
 
@@ -284,5 +285,16 @@ This example does not include any identical chains, so we should not add -H in c
 #### Example Output
 
 The example output is kept [here](https://kiharalab.org/emsuites/deepmainmast_example/2513/) for your reference. All intermediate outputs are also kept here.
+
+</details>
+
+## FAQ
+<details>
+<summary>Q: How to configure the GPU correctly for DeepMainMast to run?</summary>
+Please run the following command line before you run DeepMainMast in multi-GPU machines.
+```
+export CUDA_VISIBLE_DEVICES=[gpu_id]
+```
+Here the gpu_id should be the GPU ID that you want to use.
 
 </details>
