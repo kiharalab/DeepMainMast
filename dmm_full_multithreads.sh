@@ -685,18 +685,18 @@ echo "INFO : Start RosettaCM"
 PG=$BIN_DIR/RosettaCM.py
 for method in DMonly all AFonly VESPER; do
 	ca_model=$OUTCA/COMBi_${method}.pdb
-	output_dir=$OUTCA/CM_${method}/
-	if [ -e $ca_model ] && [ ! -e $output_dir ];then
-		python3 $PG $SEQ $ca_model $map --OutPath=$output_dir --XMLPath=$BIN_DIR --PulchraPath=$BIN_DIR/pulchra
+	cm_dir=$OUTCA/CM_${method}/
+	if [ -e $ca_model ] && [ ! -e $cm_dir ];then
+		python3 $PG $SEQ $ca_model $map --OutPath=$cm_dir --XMLPath=$BIN_DIR --PulchraPath=$BIN_DIR/pulchra
 	fi
 done
 
 com_list=()
 for method in DMonly all AFonly VESPER; do
 	ca_model=$OUTCA/COMBi_${method}.pdb
-	output_dir=$OUTCA/CM_${method}/
-	if [ -e $output_dir ] && [ -e $output_dir/A_setup.sh ] && [ ! -e $output_dir/1tmpA_thread.pdb ];then
-		cmd="bash $output_dir/A_setup.sh $output_dir/"
+	cm_dir=$OUTCA/CM_${method}/
+	if [ -e $cm_dir ] && [ -e $cm_dir/A_setup.sh ] && [ ! -e $cm_dir/1tmpA_thread.pdb ];then
+		cmd="bash $cm_dir/A_setup.sh $cm_dir/"
 		com_list+=("$cmd")
 	fi
 done
@@ -706,12 +706,12 @@ run_commands "${com_list[@]}"
 com_list=()
 for method in DMonly all AFonly VESPER; do
 	ca_model=$OUTCA/COMBi_${method}.pdb
-	output_dir=$OUTCA/CM_${method}/
+	cm_dir=$OUTCA/CM_${method}/
 	log=$OUTCA/CM_${method}.log
-	if [ -e $output_dir ] && [ -e $output_dir/A_setup.sh ] && [ -e $output_dir/C_rosettaCM.sh ] && [ ! -e $log ];then
-		cmd="bash $output_dir/C_rosettaCM.sh $output_dir 5 > $log"
+	if [ -e $cm_dir ] && [ -e $cm_dir/A_setup.sh ] && [ -e $cm_dir/C_rosettaCM.sh ] && [ ! -e $log ];then
+		cmd="bash $cm_dir/C_rosettaCM.sh $cm_dir 5 > $log"
 		if "${server_mode}";then #Generate one model
-			cmd="bash $output_dir/C_rosettaCM.sh $output_dir 1 > $log"
+			cmd="bash $cm_dir/C_rosettaCM.sh $cm_dir 1 > $log"
 		fi
 		com_list+=("$cmd")
 	fi
