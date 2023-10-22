@@ -87,7 +87,7 @@ Structure modeling from maps is an indispensable step for studying proteins and 
 CPU: >=8 cores <br>
 Memory (RAM): >=50Gb. For maps with more than 3,000 residues, memory space should be higher than 200GB. <br>
 GPU: any GPU supports CUDA with at least 12GB memory. <br>
-GPU is required for DeepMainMast and no CPU version is available for CryoREAD since it is too slow.
+GPU is required for DeepMainMast and no CPU version is available for DeepMainMast since it is too slow.
 
 ## Installation Instructions
 ### 1. [`Install git`](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git) 
