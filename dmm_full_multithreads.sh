@@ -279,7 +279,10 @@ OUTCA=$OUTF/FINAL_CA_MODELs/
 OUT_RANKED=$OUTF/RANKED_DATA/
 
 cp $map $RESULTS_DIR/input.mrc
-cp $fasta $RESULTS_DIR/seq.fasta
+
+#Check non-standerd characters and coding
+python3 $BIN_DIR/format_seq.py $fasta --OutPath $RESULTS_DIR/seq.fasta
+#cp $fasta $RESULTS_DIR/seq.fasta
 
 SEQ=$RESULTS_DIR/seq.fasta
 check_exists $SEQ
@@ -467,7 +470,8 @@ if "${af2_mode}";then
 			map_model=$VESPER_DIR/${model_id}_R${reso}.mrc
 			outfile=$VESPER_DIR/${model_id}_R${reso}.out
 			if [ ! -e $outfile ] && [ -e $map_model ] && [ -e $map ];then
-				cmd="$PG3 -a $map -b $map_model -t $CONTOUR -T 10.0 -c $Nsub -g 8.0 -s 1.0 > $outfile"
+				#cmd="$PG3 -a $map -b $map_model -t $CONTOUR -T 10.0 -c $Nsub -g 8.0 -s 1.0 > $outfile"
+				cmd="$PG3 -a $map -b $map_model -t $CONTOUR -T 10.0 -c 2 -g 8.0 -s 1.0 > $outfile"
 				com_list+=("$cmd")
 			fi			
 		done
@@ -685,18 +689,18 @@ echo "INFO : Start RosettaCM"
 PG=$BIN_DIR/RosettaCM.py
 for method in DMonly all AFonly VESPER; do
 	ca_model=$OUTCA/COMBi_${method}.pdb
-	cm_dir=$OUTCA/CM_${method}/
-	if [ -e $ca_model ] && [ ! -e $cm_dir ];then
-		python3 $PG $SEQ $ca_model $map --OutPath=$cm_dir --XMLPath=$BIN_DIR --PulchraPath=$BIN_DIR/pulchra
+	output_dir=$OUTCA/CM_${method}/
+	if [ -e $ca_model ] && [ ! -e $output_dir ];then
+		python3 $PG $SEQ $ca_model $map --OutPath=$output_dir --XMLPath=$BIN_DIR --PulchraPath=$BIN_DIR/pulchra
 	fi
 done
 
 com_list=()
 for method in DMonly all AFonly VESPER; do
 	ca_model=$OUTCA/COMBi_${method}.pdb
-	cm_dir=$OUTCA/CM_${method}/
-	if [ -e $cm_dir ] && [ -e $cm_dir/A_setup.sh ] && [ ! -e $cm_dir/1tmpA_thread.pdb ];then
-		cmd="bash $cm_dir/A_setup.sh $cm_dir/"
+	output_dir=$OUTCA/CM_${method}/
+	if [ -e $output_dir ] && [ -e $output_dir/A_setup.sh ] && [ ! -e $output_dir/1tmpA_thread.pdb ];then
+		cmd="bash $output_dir/A_setup.sh $output_dir/"
 		com_list+=("$cmd")
 	fi
 done
@@ -706,12 +710,12 @@ run_commands "${com_list[@]}"
 com_list=()
 for method in DMonly all AFonly VESPER; do
 	ca_model=$OUTCA/COMBi_${method}.pdb
-	cm_dir=$OUTCA/CM_${method}/
+	output_dir=$OUTCA/CM_${method}/
 	log=$OUTCA/CM_${method}.log
-	if [ -e $cm_dir ] && [ -e $cm_dir/A_setup.sh ] && [ -e $cm_dir/C_rosettaCM.sh ] && [ ! -e $log ];then
-		cmd="bash $cm_dir/C_rosettaCM.sh $cm_dir 5 > $log"
+	if [ -e $output_dir ] && [ -e $output_dir/A_setup.sh ] && [ -e $output_dir/C_rosettaCM.sh ] && [ ! -e $log ];then
+		cmd="bash $output_dir/C_rosettaCM.sh $output_dir 5 > $log"
 		if "${server_mode}";then #Generate one model
-			cmd="bash $cm_dir/C_rosettaCM.sh $cm_dir 1 > $log"
+			cmd="bash $output_dir/C_rosettaCM.sh $output_dir 1 > $log"
 		fi
 		com_list+=("$cmd")
 	fi
