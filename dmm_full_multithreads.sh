@@ -77,8 +77,8 @@ show_help() {
     echo "  -o [OutPut Directory Path]"
     echo "  -t [Time for main-chain tracing (sec)]"
     echo "  -T [Time for fragment assembly (sec)]"
-    echo "  -C [Max number of threads]"
-	echo "  -M [Max cpu cores per one thread job]"
+    echo "  -C [Max number of CPU cores]"
+	echo "  -M [Max cpu cores per one task]"
     #echo "  -r, Resume the job using an existing directory"
     echo "  -x [Rosetta program PATH], Execute RosettaCM modeling part"
     echo "  -H, Homo-oligomer targets. DeepMainmast refine chain-assignment."
@@ -152,11 +152,11 @@ while getopts "A:p:m:f:c:o:t:T:C:rhM:x:HFs" option; do
 			resume_flag=true
 			;;
 		C)
-			echo "Option MAX Threads -C: $OPTARG"
+			echo "Option MAX Number of CPU cores -C: $OPTARG"
 			MAX_Threads=$OPTARG
 			;;
 		M)
-			echo "Option Max SubThreads: $OPTARG"
+			echo "Option Max SubThreads per task: $OPTARG"
 			Nsub=$OPTARG
 			;;
 		x)
