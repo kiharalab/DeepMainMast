@@ -64,6 +64,25 @@ function run_subcommands(){
 	wait
 }
 
+function run_single_command(){
+	local command_list=("$@")
+	local max_jobs=1
+	local job_count=0
+	echo "max_jobs: $max_jobs"
+	echo "commands: ${command_list[@]}"
+	for command in "${command_list[@]}"; do
+		while ((job_count>=max_jobs)); do
+			sleep 5
+			job_count=$(jobs -pr|wc -l)
+		done
+		#execute command
+		echo "$command"
+		eval "$command" &
+		((job_count++))
+	done
+	wait
+}
+
 show_help() {
     echo "Usage: dmm_full_multithreads.sh [option] -f [FASTA file] -m [MAP file]"
     echo "DeepMaimast full-protocol"
@@ -476,7 +495,7 @@ if "${af2_mode}";then
 			fi			
 		done
 	done
-	run_subcommands "${com_list[@]}"
+	run_single_commands "${com_list[@]}"
 
 	##Generate Fitted Models
 	for reso in ${sim_resolutions[@]}
