@@ -2,6 +2,7 @@ import os
 import subprocess
 import numpy as np
 from Bio.PDB import *
+from Bio import PDB
 from Bio.PDB.PDBIO import PDBIO
 from Bio.PDB import PDBParser
 
@@ -23,6 +24,11 @@ def get_args():
     parser.add_argument('--PulchraPath', type=str, dest='PulchraPath', default='/home/users/bin/pulchra', help='Path of PULCHRA exe file')
     args = parser.parse_args()
     return args
+
+def save_structure(structure,output_filename):
+    io = PDB.PDBIO()
+    io.set_structure(structure)
+    io.save(output_filename)
 
 def main():
     d3to1 = {'CYS': 'C', 'ASP': 'D', 'SER': 'S', 'GLN': 'Q', 'LYS': 'K',
@@ -118,6 +124,7 @@ def main():
     pdb_chains = structure.get_chains()
     chain_list =[]
     file_list=[]
+    '''
     for chain in pdb_chains:
         chid = chain.get_id()
         chain_list.append(chid)
@@ -129,6 +136,52 @@ def main():
         res=subprocess.run(cmd,stdout=subprocess.PIPE,encoding='utf-8')
         fullatm_file = OutPath + '/input_'+chid+'.rebuilt.pdb'
         file_list.append(fullatm_file)
+    '''
+
+    #Split segment
+    model=structure[0]
+    for chain in model:
+        residues = list(chain)
+        start_index = 0
+        segment_index = 0
+        chid = chain.get_id()
+        for i in range(1,len(residues)):
+            diff = residues[i].id[1] - residues[i-1].id[1]
+
+            if diff > 2: #Segment
+                new_structure = PDB.Structure.Structure('segment')
+                new_model = PDB.Model.Model(0)
+                new_chain = PDB.Chain.Chain(chain.id)
+
+                for res in residues[start_index:i]:
+                    new_chain.add(res)
+                new_model.add(new_chain)
+                new_structure.add(new_model)
+                outpdbfile = f'{OutPath}/input_{chid}_{segment_index}.pdb'
+                save_structure(new_structure,outpdbfile)
+                cmd=[PulchraPath,'-s',outpdbfile]
+                res=subprocess.run(cmd,stdout=subprocess.PIPE,encoding='utf-8')
+                fullatm_file = f'{OutPath}/input_{chid}_{segment_index}.rebuilt.pdb'
+                file_list.append(fullatm_file)
+
+                segment_index += 1
+                start_index = i
+        #C-ter model
+        new_structure = PDB.Structure.Structure('segment')
+        new_model = PDB.Model.Model(0)
+        new_chain = PDB.Chain.Chain(chain.id)
+
+        for res in residues[start_index:i]:
+            new_chain.add(res)
+
+        new_model.add(new_chain)
+        new_structure.add(new_model)
+        outpdbfile = f'{OutPath}/input_{chid}_{segment_index}.pdb'
+        save_structure(new_structure,outpdbfile)
+        cmd=[PulchraPath,'-s',outpdbfile]
+        res=subprocess.run(cmd,stdout=subprocess.PIPE,encoding='utf-8')
+        fullatm_file = f'{OutPath}/input_{chid}_{segment_index}.rebuilt.pdb'
+        file_list.append(fullatm_file)
 
     #Merge *.rebuilt.pdb
     out_model = OutPath + '/1tmpA.pdb'
@@ -137,18 +190,6 @@ def main():
             with open(fname) as infile:
                 for line in infile:
                     outf.write(line)
-
-    #out_model = OutPath + '/input.pdb'
-    #cmd=['cp',MODEL,out_model]
-    #res=subprocess.run(cmd,stdout=subprocess.PIPE,encoding='utf-8')
-    
-    #cmd=['pulchra','-s',out_model]
-    #res=subprocess.run(cmd,stdout=subprocess.PIPE,encoding='utf-8')
-    
-    #out_model = OutPath + '/input.rebuilt.pdb'
-    #out_model2 = OutPath + '/1tmpA.pdb'
-    #cmd=['cp',out_model,out_model2]
-    #res=subprocess.run(cmd,stdout=subprocess.PIPE,encoding='utf-8')
     
     XMLPath=args.XMLPath
     out_model = XMLPath + '/C_rosettaCM.sh'
