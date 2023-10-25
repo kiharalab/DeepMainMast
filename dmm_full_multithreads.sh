@@ -495,7 +495,7 @@ if "${af2_mode}";then
 			fi			
 		done
 	done
-	run_single_commands "${com_list[@]}"
+	run_single_command "${com_list[@]}"
 
 	##Generate Fitted Models
 	for reso in ${sim_resolutions[@]}
