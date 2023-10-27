@@ -98,7 +98,7 @@ show_help() {
     echo "  -T [Time for fragment assembly (sec)]"
     echo "  -C [Max number of CPU cores]"
 	echo "  -M [Max cpu cores per one task]"
-    #echo "  -r, Resume the job using an existing directory"
+    echo "  -r [PATH of result** directory], Resume the job using an existing directory"
     echo "  -x [Rosetta program PATH], Execute RosettaCM modeling part"
     echo "  -H, Homo-oligomer targets. DeepMainmast refine chain-assignment."
     echo "  -F, Using reduced parameters for fast computing"
@@ -115,7 +115,7 @@ homo_mode=false
 fast_mode=false
 server_mode=false
 
-while getopts "A:p:m:f:c:o:t:T:C:rhM:x:HFs" option; do
+while getopts "A:p:m:f:c:o:t:T:C:r:hM:x:HFs" option; do
 	case $option in
 		A)
 			echo "Option -A: $OPTARG"
@@ -167,8 +167,9 @@ while getopts "A:p:m:f:c:o:t:T:C:rhM:x:HFs" option; do
 			TIME_ASB=$OPTARG
 			;;
 		r)
-			echo "Resume Existing Data"
+			echo "Resume Existing Data: $OPTARG"
 			resume_flag=true
+			RESUME_DIR=$OPTARG
 			;;
 		C)
 			echo "Option MAX Number of CPU cores -C: $OPTARG"
@@ -290,7 +291,6 @@ if [ -e $RESULTS_DIR ];then
 	exit
 fi
 
-mkdir -p $RESULTS_DIR/unet
 mkdir -p $RESULTS_DIR/unet
 UNET_DIR=$RESULTS_DIR/unet
 OUTF=$RESULTS_DIR
@@ -788,10 +788,16 @@ for mid in {1..20};do #Max 20 models
 done
 
 #Check Files....
+#Final Model has 4 models.
+#Rank1 	CA model
+#		Filtered Model
+#Rank1	Full-Atom Model
+#		Filtered Model
 if "${Buildfullatom_flag}";then
 	echo "INFO : DeepMainmast Computation Done with FullAtom Model"
 	check_exists $OUT_RANKED/rank1_daq_score_w9.pdb
-	cp $OUT_RANKED/rank1_daq_score_w9.pdb $output_dir/DeepMainmast${rand_tag}.pdb
+	cat $OUTCA/rank1_daq_score_w9.pdb $OUT_RANKED/rank1_daq_score_w9.pdb > $output_dir/DeepMainmast${rand_tag}.pdb
+	#cp $OUT_RANKED/rank1_daq_score_w9.pdb $output_dir/DeepMainmast${rand_tag}.pdb
 	echo "DONE" >$output_dir/done.out
 	exit
 fi
