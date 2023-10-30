@@ -14,6 +14,8 @@ import copy
 parser = PDBParser()
 io = PDBIO()
 
+MinFragmentLength=4
+
 def get_args(): 
     parser = argparse.ArgumentParser(formatter_class=argparse.ArgumentDefaultsHelpFormatter)
     parser.add_argument("FASTA", type=str, help="Target Sequence")
@@ -155,6 +157,11 @@ def main():
 
                 for res in residues[start_index:i]:
                     new_chain.add(res)
+                    
+                #ignore small fragments
+                if len(new_chain) < MinFragmentLength:
+                    start_index = i
+                    continue
                 new_model.add(new_chain)
                 new_structure.add(new_model)
                 outpdbfile = f'{OutPath}/input_{chid}_{segment_index}.pdb'
@@ -171,9 +178,12 @@ def main():
         new_model = PDB.Model.Model(0)
         new_chain = PDB.Chain.Chain(chain.id)
 
-        for res in residues[start_index:i]:
+        for res in residues[start_index:len(residues)]:
             new_chain.add(res)
-
+        #ignore too small fragments
+        print(len(new_chain))
+        if len(new_chain) < MinFragmentLength:
+            continue
         new_model.add(new_chain)
         new_structure.add(new_model)
         outpdbfile = f'{OutPath}/input_{chid}_{segment_index}.pdb'
