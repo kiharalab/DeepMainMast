@@ -303,6 +303,7 @@ Here the gpu_id should be the GPU ID that you want to use.
 <details>
 <summary>Q: How to interpret different models in DeepMainmast.pdb?</summary>
 
+The 3D model is colored by [DAQ(AA) score](https://www.nature.com/articles/s41592-022-01574-4) scaled from red (-1.0) to blue (1.0) with a 19 residues sliding window.  
 The 3D model contains four models (with rosetta)/ two models (without rosetta).  
 In MODEL1, Ca-only structure, all modeled positions are colored by DAQ(AA) score.  
 In MODEL2, Ca-only structure, amino acids with DAQ(CA) score below -0.5 are excluded, and amino acids with DAQ(AA) score below -0.5 are replaced with UNK.  
