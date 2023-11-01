@@ -110,7 +110,46 @@ def permute_ns_coord_to_pdb(input_coord,mapc,mapr,maps):
         exit()
     return [out_x, out_y, out_z]
 
+def save_dens_map(save_map_path,new_dens,
+                              origin_map_path):
 
+    with mrcfile.open(origin_map_path, permissive=True) as mrc:
+        prev_voxel_size = mrc.voxel_size
+        prev_voxel_size_x = float(prev_voxel_size['x'])
+        prev_voxel_size_y = float(prev_voxel_size['y'])
+        prev_voxel_size_z = float(prev_voxel_size['z'])
+        nx, ny, nz, nxs, nys, nzs, mx, my, mz = \
+            mrc.header.nx, mrc.header.ny, mrc.header.nz, \
+            mrc.header.nxstart, mrc.header.nystart, mrc.header.nzstart, \
+            mrc.header.mx, mrc.header.my, mrc.header.mz
+        orig = mrc.header.origin
+        print("Origin:", orig)
+        print("Previous voxel size:", prev_voxel_size)
+        print("nx, ny, nz", nx, ny, nz)
+        print("nxs,nys,nzs", nxs, nys, nzs)
+        print("mx,my,mz", mx, my, mz)
+
+        data_new = np.float32(new_dens)
+        mrc_new = mrcfile.new(save_map_path, data=data_new, overwrite=True)
+        vsize = mrc_new.voxel_size
+        vsize.flags.writeable = True
+        vsize.x = 1.0
+        vsize.y = 1.0
+        vsize.z = 1.0
+        mrc_new.voxel_size = vsize
+        mrc_new.update_header_from_data()
+        mrc_new.header.nxstart = nxs * prev_voxel_size_x
+        mrc_new.header.nystart = nys * prev_voxel_size_y
+        mrc_new.header.nzstart = nzs * prev_voxel_size_z
+        mrc_new.header.mapc = mrc.header.mapc
+        mrc_new.header.mapr = mrc.header.mapr
+        mrc_new.header.maps = mrc.header.maps
+        mrc_new.header.origin = orig
+        mrc_new.update_header_stats()
+        mrc.print_header()
+        mrc_new.print_header()
+        mrc_new.close()
+        del data_new
 def save_predict_specific_map(save_map_path,specific_class,prediction_array,
                               origin_map_path,label_only=False):
     prediction = np.array(prediction_array)

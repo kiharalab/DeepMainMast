@@ -291,10 +291,21 @@ The example output is kept [here](https://kiharalab.org/emsuites/deepmainmast_ex
 ## FAQ
 <details>
 <summary>Q: How to configure the GPU correctly for DeepMainMast to run?</summary>
+
 Please run the following command line before you run DeepMainMast in multi-GPU machines.
 ```
 export CUDA_VISIBLE_DEVICES=[gpu_id]
 ```
 Here the gpu_id should be the GPU ID that you want to use.
 
+</details>
+
+<details>
+<summary>Q: How to interpret different models in DeepMainmast.pdb?</summary>
+
+The 3D model contains four models (with rosetta)/ two models (without rosetta).  
+In MODEL1, Ca-only structure, all modeled positions are colored by DAQ(AA) score.  
+In MODEL2, Ca-only structure, amino acids with DAQ(CA) score below -0.5 are excluded, and amino acids with DAQ(AA) score below -0.5 are replaced with UNK.  
+In MODEL3, full-atomic structure, all modeled positions are colored by DAQ(AA) score.  
+In MODEL4, full-atomic structure, amino acids with DAQ(CA) score below -0.5 are excluded, and amino acids with DAQ(AA) score below -0.5 are replaced with UNK.  
 </details>

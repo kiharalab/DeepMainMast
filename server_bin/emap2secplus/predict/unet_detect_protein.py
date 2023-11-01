@@ -1,12 +1,21 @@
 import os
+
+import mrcfile
 import numpy as np
 from data_processing.gen_input_data import gen_input_data
 from data_processing.Single_Dataset import Single_Dataset
+from data_processing.map_utils import save_dens_map
 import torch
 import torch.nn as nn
 from model.Small_Unet_3Plus_DeepSup import Small_UNet_3Plus_DeepSup
 from predict.make_predictions import make_predictions, make_predictions_old
+def Gen_MaskProtein_map(protein_prob,cur_map_path,save_map_path,threshold=0.01):
 
+    with mrcfile.open(cur_map_path,permissive=True) as mrc:
+        dens_data=np.array(mrc.data)
+    dens_data[protein_prob<=threshold]=0
+    #then save the new density data
+    save_dens_map(save_map_path,dens_data, cur_map_path)
 
 def unet_detect_protein(map_data, resume_model_path, voxel_size,
                         stride, batch_size, train_save_path, contour, params, original_map_path, save_root):
@@ -70,6 +79,14 @@ def unet_detect_protein(map_data, resume_model_path, voxel_size,
                      voxel_size, overall_shape,
                      base_class, save_root,
                      pre_name, label_list, original_map_path, run_type=params['type'])
+
+    # read ca mrc to generate protein-focs region for vesper fitting.
+    if params['type'] == 0:
+        ca_prediction_path=os.path.join(save_root, "atom_CA.mrc")
+        with mrcfile.open(ca_prediction_path,permissive=True) as mrc:
+            ca_prob=mrc.data
+        output_mask_map_path = os.path.join(save_root, "protein_dens.mrc")
+        Gen_MaskProtein_map(ca_prob,original_map_path,output_mask_map_path,threshold=0.01)
     return None
     # np.save(cur_prob_path, Prediction_Matrix)
     # np.save(cur_label_path, Prediction_Label)
