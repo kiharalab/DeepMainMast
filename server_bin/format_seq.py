@@ -33,6 +33,7 @@ def main():
             else:
                 #check 20AA or not
                 for aa in l:
+                    aa = aa.upper()
                     if aa in AA20:
                         seq+=aa
                         #print(aa)
