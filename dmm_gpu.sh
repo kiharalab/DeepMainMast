@@ -267,3 +267,4 @@ if [ ! -e $UNET_DIR/sigmoidAA_GLN.mrc ]||[ ! -e $UNET_DIR/atom_CB.mrc ];then
     echo "ERROR : Emap2sf failed"
     exit;
 fi
+echo "DONE" >$output_dir/gpu.out
