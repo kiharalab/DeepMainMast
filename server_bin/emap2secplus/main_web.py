@@ -21,6 +21,8 @@ if __name__ == "__main__":
         model_path = os.path.abspath(params['M'])
         save_path = f"{params['O']}/unet"
         map_name = params['F'].split('/')[-1].split('.')[-2]
+        from data_processing.Unify_Map import Unify_Map
+        cur_map_path = Unify_Map(cur_map_path,os.path.join(save_path,map_name+"_unified.mrc"))
         from data_processing.Resize_Map import Resize_Map
         cur_map_path = Resize_Map(cur_map_path,os.path.join(save_path,map_name+".mrc"))
         from data_processing.map_utils import segment_map
