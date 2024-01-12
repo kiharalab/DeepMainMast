@@ -22,15 +22,18 @@ For technical problems or questions, please reach to Genki Terashi (gterashi@pur
 
 ## Citation:
 
-Genki Terashi, Xiao Wang, Devashish Prasad, Tsukasa Nakamura & Daisuke Kihara. Nature Methods, 2023.
+Genki Terashi, Xiao Wang, Devashish Prasad, Tsukasa Nakamura & Daisuke Kihara. DeepMainmast: integrated protocol of protein structure modeling for cryo-EM with deep learning and structure prediction. Nature Methods, 21: 122-131 (2024)
 [Paper]()
 ```
-@article{Terashi2023deepmainmast,   
-  title={Integrated Protocol of Protein Structure Modeling for cryo-EM with Deep Learning and Structure Prediction},   
-  author={Genki Terashi, Xiao Wang, Devashish Prasad, Tsukasa Nakamura, and Daisuke Kihara},    
-  journal={Nature Methods},    
-  year={2023}    
-}   
+@article{Terashi2024deepmainmast,
+  title={DeepMainmast: integrated Protocol of Protein Structure Modeling for cryo-EM with Deep Learning and Structure Prediction},
+  author={Genki Terashi, Xiao Wang, Devashish Prasad, Tsukasa Nakamura, and Daisuke Kihara},
+  journal={Nature Methods},
+  year={2023},
+  volume={21},
+  number={1},
+  pages={122-131}
+}
 ```
 
 # Online Platform:
