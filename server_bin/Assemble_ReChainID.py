@@ -260,7 +260,7 @@ def Assemble(d,sec,Ncpu,rate):
     #status = solver.Solve(model)
     status = solver.SolveWithSolutionCallback(model, solution_printer)
     results=[]
-    if status == pywraplp.Solver.OPTIMAL or pywraplp.Solver.FEASIBLE:
+    if status == pywraplp.Solver.OPTIMAL or status == pywraplp.Solver.FEASIBLE:
         for f in range(max_fid+1):
             for c in range(max_cid+1):
                 if solver.BooleanValue(assign[(f,c)]):
