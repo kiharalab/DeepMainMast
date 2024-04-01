@@ -183,7 +183,7 @@ def Assemble(d,sec,Ncpu,Nhint):
     #status = solver.Solve(model)
     status = solver.SolveWithSolutionCallback(model, solution_printer)
     results=[]
-    if status == pywraplp.Solver.OPTIMAL or status == pywraplp.Solver.FEASIBLE:
+    if status == pywraplp.Solver.OPTIMAL or pywraplp.Solver.FEASIBLE:
         for i in range(len(idtbl)):
             if solver.BooleanValue(x[i]):
                 #print(i,'ID=',idtbl[i]) #order->ID
