@@ -683,8 +683,8 @@ done
 
 if ! "${Buildfullatom_flag}";then
 	echo "INFO : DeepMainmast Computation Done: CA models"
-	check_exists $OUTCA/CM_DMonly/1tmpA_thread.pdb
-	cp $OUTCA/CM_DMonly/1tmpA_thread.pdb $output_dir/DeepMainmast${rand_tag}.pdb
+	check_exists $OUTCA/rank1_daq_score_w9.pdb
+    cp $OUTCA/rank1_daq_score_w9.pdb $output_dir/DeepMainmast${rand_tag}.pdb
 	echo "DONE" >$output_dir/done.out
 	exit
 fi
