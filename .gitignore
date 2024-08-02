@@ -158,3 +158,82 @@ cython_debug/
 #  and can be added to the global gitignore or merged into this file.  For a more nuclear
 #  option (not recommended) you can uncomment the following to ignore the entire idea folder.
 #.idea/
+#
+
+# Prerequisites
+*.d
+
+# Object files
+*.o
+*.ko
+*.obj
+*.elf
+
+# Linker output
+*.ilk
+*.map
+*.exp
+
+# Precompiled Headers
+*.gch
+*.pch
+
+# Libraries
+*.lib
+*.a
+*.la
+*.lo
+
+# Shared objects (inc. Windows DLLs)
+*.dll
+*.so
+*.so.*
+*.dylib
+
+# Executables
+*.exe
+*.out
+*.app
+*.i*86
+*.x86_64
+*.hex
+
+# Debug files
+*.dSYM/
+*.su
+*.idb
+*.pdb
+
+# Kernel Module Compile Results
+*.mod*
+*.cmd
+.tmp_versions/
+modules.order
+Module.symvers
+Mkfile.old
+dkms.conf
+# Ignore specific binaries in server_bin directory
+server_bin/DAQscore_Unet
+server_bin/MainmastC_UnetAF2
+server_bin/MainmastC_UnetAssembleMtx
+server_bin/MainmastC_UnetChainAssign
+server_bin/MainmastC_Unet_node
+server_bin/VESPER_Power
+server_bin/VESPER_Power_colab
+server_bin/pulchra
+
+# Ignore binaries and object files in src directories
+src/DAQscore_Unet_src/DAQscore_Unet
+src/DAQscore_Unet_src/*.o
+src/MainmastC_UnetAF2_src/MainmastC_UnetAF2
+src/MainmastC_UnetAF2_src/*.o
+src/MainmastC_UnetAssembleMtx_src/MainmastC_UnetAssembleMtx
+src/MainmastC_UnetAssembleMtx_src/*.o
+src/MainmastC_UnetChainAssign_src/MainmastC_UnetChainAssign
+src/MainmastC_UnetChainAssign_src/*.o
+src/MainmastC_Unet_node_src/MainmastC_Unet_node
+src/MainmastC_Unet_node_src/*.o
+src/VESPER_Power_colab_src/VESPER_Power_colab
+src/VESPER_Power_colab_src/*.o
+src/VESPER_Power_src/VESPER_Power
+src/VESPER_Power_src/*.o
