@@ -490,7 +490,7 @@ if "${af2_mode}";then
 			outfile=$VESPER_DIR/${model_id}_R${reso}.out
 			if [ ! -e $outfile ] && [ -e $map_model ] && [ -e $map ];then
 				#cmd="$PG3 -a $map -b $map_model -t $CONTOUR -T 10.0 -c $Nsub -g 8.0 -s 1.0 > $outfile"
-				cmd="$PG3 -a $map -b $map_model -t $CONTOUR -T 10.0 -c 2 -g 8.0 -s 1.0 > $outfile"
+				cmd="$PG3 -a $map -b $map_model -t $CONTOUR -T 1.0 -c 2 -g 8.0 -s 1.0 > $outfile"
 				com_list+=("$cmd")
 			fi			
 		done
@@ -676,7 +676,7 @@ for method in DMonly all AFonly VESPER; do
 	if [ -e $ca_model ] && [ ! -e $ca_dot ];then
 		#simulate map
 		python3 $BIN_DIR/btpdb2mrc.py 5.0 $ca_model $new_map 
-        $PG -a $map -b $new_map -t 0.001 -T 10.0 -c 4 -g 8.0 -e -s 2.0 > $ca_dot
+        $PG -a $map -b $new_map -t 0.001 -T 1.0 -c 4 -g 8.0 -e -s 2.0 > $ca_dot
 	fi
 done
 ##Ranking CA models
@@ -770,7 +770,7 @@ for method in DMonly all AFonly VESPER; do
 		if [ -e $FullAtomModel ] && [ ! -e $FullDot ];then
 			#simulate map
 			python3 $BIN_DIR/btpdb2mrc.py 5.0 $FullAtomModel $new_map 
-        	$PG -a $map -b $new_map -t 0.001 -T 10.0 -c 4 -g 8.0 -e -s 2.0 > $FullDot
+        	$PG -a $map -b $new_map -t 0.001 -T 1.0 -c 4 -g 8.0 -e -s 2.0 > $FullDot
 		fi
 	done
 done
