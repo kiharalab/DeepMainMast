@@ -11,6 +11,8 @@ dependencies:
   - python=3.8.10
   - pytorch=1.9.0
   - fftw
+  - mkl=2024.0
+  - gcc=14.1
   - pip:
       - biopython
       - numba==0.57.1

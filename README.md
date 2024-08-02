@@ -20,6 +20,13 @@ Contact: Daisuke Kihara (dkihara@purdue.edu)
 
 For technical problems or questions, please reach to Genki Terashi (gterashi@purdue.edu).
 
+## Notice
+The newer version of Intel MKL will cause pyTorch to give the following error due to a symbol being removed: ImportError undefined symbol: `iJIT_NotifyEvent` is encountered.
+
+We have updated the environment.yml and requirements.txt to fix the version to an older version. Any previous installation should work just fine.
+
+If you have ever encountered this issue, please activate the conda env first and run `conda install mkl==2024.0`.
+
 ## Citation:
 
 Genki Terashi, Xiao Wang, Devashish Prasad, Tsukasa Nakamura & Daisuke Kihara. DeepMainmast: integrated protocol of protein structure modeling for cryo-EM with deep learning and structure prediction. Nature Methods, 21: 122-131 (2024)
