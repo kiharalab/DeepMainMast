@@ -7,23 +7,23 @@ OBJECTS = $(COM)
 HEADER = struct.h func.h mrc.h
 PG = VESPER_Power
 
-OPT = -O3 -msse4.2 -msse -msse2 -msse3 -mmmx -ftree-vectorize -ftree-vectorizer-verbose=3 -ffast-math -march=native -funroll-loops -fopenmp
+OPT = -O3 -msse4.2 -msse -msse2 -msse3 -mmmx -ftree-vectorize -ftree-vectorizer-verbose=3 -march=native -funroll-loops -fopenmp
 
 $(PG) : main.c $(OBJECTS) $(HEADER) $(COM)
-	$(CC) -o $(PG) main.c $(OBJECTS) -lm $(OPT) -lfftw3_threads -lfftw3f
+	$(CC) $(CFLAGS) $(OPT) -o $(PG) main.c $(OBJECTS) -lm -lfftw3_threads -lfftw3f
 
 
 chkcmdline.o : chkcmdline.c $(HEADER)
 	$(CC) -O3 -c chkcmdline.c
 
 readpdb.o : readpdb.c $(HEADER)
-	$(CC) -O3 -c readpdb.c -lm $(OPT)
+	$(CC) $(OPT) -c readpdb.c -lm
 
 mrc.o : mrc.c $(HEADER)
-	$(CC) -O3 -c mrc.c -lm $(OPT)
+	$(CC) $(OPT) -c mrc.c -lm
 
 mrcfft.o : mrcfft.c $(HEADER) mrcfft.h
-	$(CC) -O3 -c mrcfft.c -lm $(OPT) -lfftw3_threads -lfftw3f
+	$(CC) $(CFLAGS) $(OPT) -c mrcfft.c -lm -lfftw3_threads -lfftw3f
 
 clean:
 	find . -name "*.o" -type f -delete

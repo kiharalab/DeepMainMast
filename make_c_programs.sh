@@ -1,4 +1,12 @@
+#!/bin/bash
+
 ###Set up DeepMainmast fast version
+
+set -euxo pipefail
+
+if [ -n ${CONDA_PREFIX} ]; then
+  export CFLAGS="-I${CONDA_PREFIX}/include ${CFLAGS:-}"
+fi
 
 if [ ! -e "./src/DAQscore_Unet_src" ]||[ ! -e "./server_bin" ];then
     echo "Can not find src directory."
