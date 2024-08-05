@@ -10,7 +10,7 @@ PG = VESPER_Power
 OPT = -O3 -msse4.2 -msse -msse2 -msse3 -mmmx -ftree-vectorize -ftree-vectorizer-verbose=3 -march=native -funroll-loops -fopenmp
 
 $(PG) : main.c $(OBJECTS) $(HEADER) $(COM)
-	$(CC) $(CFLAGS) $(OPT) -o $(PG) main.c $(OBJECTS) -lm -lfftw3_threads -lfftw3f
+	$(CC) $(CFLAGS) $(OPT) -o $(PG) main.c $(OBJECTS) -lm -lfftw3 -lfftw3_threads -lfftw3f
 
 
 chkcmdline.o : chkcmdline.c $(HEADER)
@@ -23,7 +23,7 @@ mrc.o : mrc.c $(HEADER)
 	$(CC) $(OPT) -c mrc.c -lm
 
 mrcfft.o : mrcfft.c $(HEADER) mrcfft.h
-	$(CC) $(CFLAGS) $(OPT) -c mrcfft.c -lm -lfftw3_threads -lfftw3f
+	$(CC) $(CFLAGS) $(OPT) -c mrcfft.c -lm -lfftw3 -lfftw3_threads -lfftw3f
 
 clean:
 	find . -name "*.o" -type f -delete
