@@ -25,6 +25,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <sys/timeb.h>
+#include <time.h>
 
 #define uchar unsigned char
 #define uint unsigned int
