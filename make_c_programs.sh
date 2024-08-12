@@ -15,7 +15,7 @@ fi
 
 pushd ./src
 
-for pg in VESPER_Power DAQscore_Unet MainmastC_UnetAssembleMtx  MainmastC_Unet_node MainmastC_UnetAF2  MainmastC_UnetChainAssign  VESPER_Power_colab
+for pg in VESPER_Power DAQscore_Unet MainmastC_UnetAssembleMtx  MainmastC_Unet_node MainmastC_UnetAF2  MainmastC_UnetChainAssign  VESPER_Power_colab MainmastC_UnetAF2Refine
 do
     dir=${pg}_src
     pushd $dir
@@ -36,7 +36,7 @@ popd
 popd
 
 #Check Files:
-for pg in pulchra VESPER_Power DAQscore_Unet MainmastC_UnetAssembleMtx  MainmastC_Unet_node MainmastC_UnetAF2  MainmastC_UnetChainAssign  VESPER_Power_colab
+for pg in pulchra VESPER_Power DAQscore_Unet MainmastC_UnetAssembleMtx  MainmastC_Unet_node MainmastC_UnetAF2  MainmastC_UnetChainAssign  VESPER_Power_colab MainmastC_UnetAF2Refine
 do
     if [ ! -e ./server_bin/${pg} ];then
         echo "Missing $pg. Please check ./src/${pg}_src/"

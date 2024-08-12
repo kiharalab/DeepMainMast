@@ -84,7 +84,7 @@ function run_single_command(){
 }
 
 show_help() {
-    echo "Usage: dmm_full_multithreads.sh [option] -f [FASTA file] -m [MAP file]"
+    echo "Usage: dmmrefine_full_multithreads.sh [option] -f [FASTA file] -m [MAP file]"
     echo "DeepMaimast full-protocol"
     echo "Paratemters:"
     echo "  -h, Show help page"
@@ -170,6 +170,7 @@ while getopts "A:p:m:f:c:o:t:T:C:r:hM:x:HFs" option; do
 			echo "Resume Existing Data: $OPTARG"
 			resume_flag=true
 			RESUME_DIR=$OPTARG
+			check_exists $RESUME_DIR
 			;;
 		C)
 			echo "Option MAX Number of CPU cores -C: $OPTARG"
@@ -274,21 +275,26 @@ fi
 #Set Up files
 
 #rand_tag=`python -c "import random, string; print(''.join(random.choices(string.ascii_letters + string.digits, k=8)))"`
-rand_tag=''
-RESULTS_DIR=$output_dir/results
 
-#Attempt 3 times
-if [ -e $RESULTS_DIR ];then
+if "${resume_flag}";then
+	RESULTS_DIR=$RESUME_DIR
+else
+	rand_tag=''
+	RESULTS_DIR=$output_dir/results
+
+	#Attempt 3 times
+	if [ -e $RESULTS_DIR ];then
 	rand_tag=`python -c "import random, string; print(''.join(random.choices(string.ascii_letters + string.digits, k=8)))"`
 	RESULTS_DIR=$output_dir/results${rand_tag}
-fi
-if [ -e $RESULTS_DIR ];then
+	fi
+	if [ -e $RESULTS_DIR ];then
 	rand_tag=`python -c "import random, string; print(''.join(random.choices(string.ascii_letters + string.digits, k=8)))"`
 	RESULTS_DIR=$output_dir/results${rand_tag}
-fi
-if [ -e $RESULTS_DIR ];then
+	fi
+	if [ -e $RESULTS_DIR ];then
 	echo "Can not generate new dir: $RESULTS_DIR"
 	exit
+	fi
 fi
 
 mkdir -p $RESULTS_DIR/unet
@@ -308,8 +314,8 @@ check_exists $SEQ
 
 ##AF2 Model check
 if "${af2_mode}";then
-	#Renumber and assign chain ID
-	RENUM=$BIN_DIR/Renum_chain.py
+	#Renumber and assign chain ID Keep the same chain order in the AF2 model
+	RENUM=$BIN_DIR/Renum_chain_for_refine.py
 	af2_model=$RESULTS_DIR/AF2_renum.pdb
 	if [ ! -e $af2_model ];then
 		python3 $RENUM $SEQ $af2_model_ori --OutPath $af2_model
@@ -371,7 +377,7 @@ echo "INFO : Path Tracing by VRP Done"
 
 ##Generate INP file
 com_list=()
-PG=$BIN_DIR/MainmastC_UnetAF2
+PG=$BIN_DIR/MainmastC_UnetAF2Refine #For Refinement
 ASB=$BIN_DIR/Assemble_Iter.py
 for p in ${Pca_cutoff[@]}
 do
@@ -407,6 +413,8 @@ done
 run_commands "${com_list[@]}"
 echo "INFO : generating INP file Done"
 
+exit
+
 ##Assemble Fragments
 com_list=()
 ASB=$BIN_DIR/Assemble_Iter.py
@@ -433,6 +441,7 @@ do
 				cmd="python $ASB --Nstock 10000 --Niter 3 $INP --OutPath $OUT --Ncpu $Nsub --SecAssemble $TIME_ASB &> $log"
 			 	com_list+=("$cmd")  
 			fi
+			continue
 			if "${af2_mode}";then
 				for Rsize in ${Aligned_positions[@]};do
                 	INP=$OUTF/INP_p${p}Nch${Nchain}Nali${Nali}R${Rsize}.txt
@@ -489,8 +498,8 @@ if "${af2_mode}";then
 			map_model=$VESPER_DIR/${model_id}_R${reso}.mrc
 			outfile=$VESPER_DIR/${model_id}_R${reso}.out
 			if [ ! -e $outfile ] && [ -e $map_model ] && [ -e $map ];then
-				#cmd="$PG3 -a $map -b $map_model -t $CONTOUR -T 10.0 -c $Nsub -g 8.0 -s 1.0 > $outfile"
-				cmd="$PG3 -a $map -b $map_model -t $CONTOUR -T 1.0 -c 2 -g 8.0 -s 1.0 > $outfile"
+				cmd="$PG3 -a $map -b $map_model -t $CONTOUR -T 1.0 -c $Nsub -g 8.0 -s 1.0 > $outfile"
+				#cmd="$PG3 -a $map -b $map_model -t $CONTOUR -T 1.0 -c 2 -g 8.0 -s 1.0 > $outfile"
 				com_list+=("$cmd")
 			fi			
 		done
