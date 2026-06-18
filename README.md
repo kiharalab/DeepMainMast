@@ -129,7 +129,7 @@ bash make_c_programs.sh
 
 ### 5. Install Rosetta (optional)
 If you want to build full-atom protein structure, then you need to install rosetta for DeepMainMast.
-Please check the instructions [here](https://new.rosettacommons.org/demos/latest/tutorials/install_build/install_build) to install Rosetta locally. 
+Please check the instructions [here](https://github.com/RosettaCommons/rosetta/tree/main) to install Rosetta locally. 
 
 
 </details>
