@@ -9,6 +9,7 @@ from Bio.PDB import PDBParser
 from Bio.PDB.PDBIO import PDBIO
 from Bio import PDB, SeqIO,AlignIO
 from Bio.Align import PairwiseAligner
+from Bio.Data.PDBData import protein_letters_3to1
 
 def get_args(): 
     parser = argparse.ArgumentParser(formatter_class=argparse.ArgumentDefaultsHelpFormatter)
@@ -73,7 +74,7 @@ def get_sequence_from_model(structure):
     for chain in structure:
         for residue in chain:
             if PDB.is_aa(residue,standard=True):
-                seq_data += PDB.Polypeptide.three_to_one(residue.get_resname())
+                seq_data += protein_letters_3to1[residue.get_resname()]
                 resnum_tbl.append(residue.id[1])
     return seq_data,resnum_tbl
 
